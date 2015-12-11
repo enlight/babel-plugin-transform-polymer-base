@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "declaration": false,
+        "noLib": false,
+        "rootDir": "src",
+        "outDir": "lib"
+    },
+    "files": [
+        "typings/babel-traverse.d.ts",
+        "typings/babel-types.d.ts",
+        "src/index.ts"
+    ]
+}
