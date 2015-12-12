@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/enlight/babel-plugin-transform-polymer-base",
   "devDependencies": {
+    "babel-helper-plugin-test-runner": "^6.3.13",
     "typescript": "^1.8.0-dev.20151210"
   }
 }
