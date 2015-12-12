@@ -4,14 +4,30 @@
 'use strict';
 
 export default function ({ types }: { types: BabelTypes }) {
+  const polymerBehaviorVisitor = {
+    // `this.behavior.x` -> `this.x`
+    MemberExpression(path: NodePath<BabelNodeMemberExpression>) {
+      const objectPath = path.get('object');
+      if (objectPath.matchesPattern('this.behavior')) {
+        objectPath.replaceWith(types.thisExpression());
+      }
+    },
+    ClassExpression(path: NodePath<BabelNodeClassExpression>) {
+      // this visitor should only visit the class expressions it's specifically told to visit
+      // by the main visitor, so it shouldn't recurse into class expressions
+      path.stop();
+    }
+  };
+
   return {
     visitor: {
-      // Remove `extends Polymer.BaseClass()` from an ES6 class expression
+      // `class X extends Polymer.BaseClass()` -> `class X`
       ClassExpression(path: NodePath<BabelNodeClassExpression>) {
         if (types.isCallExpression(path.node.superClass)) {
           const calleePath = path.get('superClass.callee');
           if (calleePath.matchesPattern('Polymer.BaseClass')) {
             path.get('superClass').remove();
+            path.traverse(polymerBehaviorVisitor);
           }
         }
       }

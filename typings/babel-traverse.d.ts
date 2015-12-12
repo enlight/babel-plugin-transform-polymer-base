@@ -15,4 +15,8 @@ interface NodePath<T> {
   matchesPattern(pattern: string, partialMatch?: boolean): boolean;
   /** Remove the node from the AST. */
   remove(): void;
+  replaceWith(node: BabelNode): void;
+  traverse(visitor: any, state?: any): void;
+  /** Stop traversing the AST with the current visitor. */
+  stop(): void;
 }

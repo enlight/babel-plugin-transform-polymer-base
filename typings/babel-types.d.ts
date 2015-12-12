@@ -73,9 +73,15 @@ declare class BabelNodeClassExpression extends BabelNode {
   superTypeParameters: any;
 }
 
-type BabelNodeExpression = BabelNodeCallExpression | BabelNodeMemberExpression;
+declare class BabelNodeThisExpression extends BabelNode {
+  type: "ThisExpression";
+}
+
+type BabelNodeExpression = BabelNodeCallExpression | BabelNodeMemberExpression | BabelNodeThisExpression;
 
 declare interface BabelTypes {
+  thisExpression(): BabelNodeThisExpression;
+
   isIdentifier(node: Object, opts?: Object): node is BabelNodeIdentifier;
   isMemberExpression(node: Object, opts?: Object): node is BabelNodeMemberExpression;
   isCallExpression(node: Object, opts?: Object): node is BabelNodeCallExpression;
