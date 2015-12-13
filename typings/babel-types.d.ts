@@ -63,6 +63,16 @@ declare class BabelNodeClassBody extends BabelNode {
   body: any;
 }
 
+declare class BabelNodeClassDeclaration extends BabelNode {
+  type: "ClassDeclaration";
+  id: BabelNodeIdentifier;
+  body: BabelNodeClassBody;
+  superClass: BabelNodeExpression;
+  decorators: any;
+  typeParameters: any;
+  superTypeParameters: any;
+}
+
 declare class BabelNodeClassExpression extends BabelNode {
   type: "ClassExpression";
   id: BabelNodeIdentifier;

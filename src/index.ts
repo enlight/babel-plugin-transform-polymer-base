@@ -19,18 +19,22 @@ export default function ({ types }: { types: BabelTypes }) {
     }
   };
 
+  function transformClass(path: NodePath<BabelNodeClassDeclaration | BabelNodeClassExpression>): void {
+    if (types.isCallExpression(path.node.superClass)) {
+      const calleePath = path.get('superClass.callee');
+      if (calleePath.matchesPattern('Polymer.BaseClass')) {
+        path.get('superClass').remove();
+        path.traverse(polymerBehaviorVisitor);
+      }
+    }
+  }
+
   return {
     visitor: {
       // `class X extends Polymer.BaseClass()` -> `class X`
-      ClassExpression(path: NodePath<BabelNodeClassExpression>) {
-        if (types.isCallExpression(path.node.superClass)) {
-          const calleePath = path.get('superClass.callee');
-          if (calleePath.matchesPattern('Polymer.BaseClass')) {
-            path.get('superClass').remove();
-            path.traverse(polymerBehaviorVisitor);
-          }
-        }
-      }
+      ClassDeclaration: transformClass,
+      // `let X = class extends Polymer.BaseClass()` -> `let X = class`
+      ClassExpression: transformClass
     }
   }
 }
