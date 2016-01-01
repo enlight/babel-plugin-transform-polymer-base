@@ -38,3 +38,9 @@ export default function ({ types }: { types: BabelTypes }) {
     }
   }
 }
+
+// Babel seems to expect `module.exports` to match the `default` export,
+// at least that's how all the standard plugins appear to be written.
+declare var module: any;
+declare var exports: any;
+module.exports = exports.default;
